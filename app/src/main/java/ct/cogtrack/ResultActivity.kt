@@ -10,6 +10,15 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
+        // val score = this.intent.getSerializableExtra("score") as Result
+        val score = ResultHolder.result
+
+        var msg = ""
+        for(s in score) {
+            msg += "%s = %f\n".format(s.first, s.second)
+        }
+        this.resultView.text = msg
+
         // setSupportActionBar(toolbar)
     }
 }
