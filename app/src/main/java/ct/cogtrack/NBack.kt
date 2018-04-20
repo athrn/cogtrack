@@ -1,38 +1,76 @@
 package ct.cogtrack
 
+import kotlin.math.max
 
-class NBack(val n_rounds: Int = 10
-            ) {
 
+class NBack(val nBack: Int = 2,
+            val maxRounds: Int = 10,
+            val charSet: String = "ABCDEF",
+            val randInt: (Int)->Int) // KFunction1<@ParameterName(name = "callArg") Int, Int>
+{
+
+    // TODO: Rename to correct, wrongMatch, missedMatch or such
     var right = 0
     var wrong = 0
     var noResponse = 0
     var reactionSum= 0.0
     var reactionSum2= 0.0
 
-    var i = 0
-    var isStopped: Boolean = false
+    var rounds = 0
+    var isStopped = false
+    var hasGuessed = true
+
+    var history = Array<Char>(nBack + 1, { ' ' })
 
     fun nextChar(): Char {
-        val chars = "ABCDEF"
-        i++
-        return chars[i % chars.length]
+        // TODO: Reconsider end condition. How to signal end of game? Return space? Check finished? Should it be finished after last match?
+
+        if(finished())
+            return ' '
+
+
+        var char = charSet[randInt(charSet.length)]
+        history[rounds % history.size] = char
+        rounds++
+
+        if(isMatch() && !hasGuessed)
+            noResponse++
+
+        hasGuessed = false
+        return char
     }
 
-    fun match()
+    fun isMatch(): Boolean {
+        val cur = (rounds-1) % history.size
+        val prev = (cur+1) % history.size
+        return history[cur] == history[prev]
+    }
+
+
+    fun guessMatch(): Boolean
     {
-        // nextChar()
+        if(!hasGuessed)
+            if(isMatch())
+                this.right++
+            else
+                this.wrong++
+
+        if(finished())
+            return false
+
+        hasGuessed = true
+        return isMatch()
     }
 
     fun finished(): Boolean {
-        return isStopped or (i > n_rounds)
+        return isStopped || (hasGuessed && rounds == maxRounds)
 
     }
 
     fun score(): Result
     {
         return arrayListOf(
-                "n" to ((i+1).toDouble()),
+                "n" to (rounds.toDouble()),
                 "right" to right.toDouble(),
                 "wrong" to wrong.toDouble(),
                 "no_response" to noResponse.toDouble(),

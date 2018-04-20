@@ -15,7 +15,8 @@ class ResultActivity : AppCompatActivity() {
 
         var msg = ""
         for(s in score) {
-            msg += "%s = %f\n".format(s.first, s.second)
+            // msg += "%s = %f\n".format(s.first, s.second)
+            msg += "${s.first} = ${s.second}\n".format(s.first, s.second)
         }
         this.resultView.text = msg
 

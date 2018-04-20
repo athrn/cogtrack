@@ -4,13 +4,13 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import kotlinx.android.synthetic.main.activity_nback.*
 import java.util.*
 
 class NBackActivity : AppCompatActivity() {
 
-    private var nback = NBack(n_rounds = 5)
+    private var rnd = Random()
+    private var nback = NBack(maxRounds = 5, randInt = rnd::nextInt)
     private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class NBackActivity : AppCompatActivity() {
         quitButton.setOnClickListener { view -> this.endGame() }
 
         // this.nback = NBack({ char: Char -> letterView.text = char.toString() })
-        matchButton.setOnClickListener { this.nback.match() }
+        matchButton.setOnClickListener { this.nback.guessMatch() }
 
         nextChar()
     }
