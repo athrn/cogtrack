@@ -141,8 +141,8 @@ class NBackTest {
         assertEquals(3, nback.wrong)
         assertEquals(1, nback.noResponse)
 
-        assert(nback.reactionSum > 0)
-        assert(nback.reactionSum2 > 0)
+        assert(nback.reactionTime > 0)
+        assert(nback.reactionTimeStdev > 0)
     }
 
 
