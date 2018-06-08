@@ -1,5 +1,6 @@
 package ct.cogtrack
 
+import java.util.*
 import kotlin.math.sqrt
 
 
@@ -23,16 +24,34 @@ class Stat {
     }
 }
 
+class RandomChar(val chars: String = "ABCDEF",
+                 val rnd: Random = Random()) {
+
+    fun next(): Char {
+        return chars[rnd.nextInt(chars.length)]
+    }
+}
+
+class CharSequence(val chars: String = "ABCDEF") {
+    var i = -1
+
+    fun next(): Char {
+        i = (i + 1) % chars.length
+        return chars[i]
+    }
+}
+
 class NBack(val nBack: Int = 2,
             val maxRounds: Int = 10,
-            val charSet: String = "ABCDEF",
-            val randInt: (Int)->Int) // KFunction1<@ParameterName(name = "callArg") Int, Int>
+            val charGenerator: ()->Char)
+            // val charSet: String = "ABCDEF",
+            // val randInt: (Int)->Int) // KFunction1<@ParameterName(name = "callArg") Int, Int>
 {
 
     // TODO: Rename to correct, wrongMatch, missedMatch or such
     var right = 0
-    var wrong = 0
-    var noResponse = 0
+    var wrongGuess = 0
+    var wrongNoResponse = 0
 //    var reactionSum= 0.0
 //    var reactionSum2= 0.0
 
@@ -53,33 +72,40 @@ class NBack(val nBack: Int = 2,
     val reactionTimeStdev get() = reactionStat.stdev
 
     fun nextChar(): Char {
-        // TODO: Reconsider end condition. How to signal end of game? Return space? Check finished? Should it be finished after last match?
 
-        if(finished())
+        if(isFinished()) {
+            this.stop()
             return ' '
+        }
 
         reactionStartTime = System.nanoTime()
 
-        var char = charSet[randInt(charSet.length)]
+        if(isMatch() && !hasGuessed)
+            wrongNoResponse++
+
+        var char = charGenerator()
         history[rounds % history.size] = char
         rounds++
-
-        if(isMatch() && !hasGuessed)
-            noResponse++
 
         hasGuessed = false
         return char
     }
 
     fun isMatch(): Boolean {
+        if(rounds < history.size - 1)
+            return false
+
         val cur = (rounds-1) % history.size
         val prev = (cur+1) % history.size
         return history[cur] == history[prev]
     }
 
 
-    fun guessMatch(): Boolean
+    fun guessIsMatch(): Boolean
     {
+        if(isStopped)
+            return false
+
         if (!hasGuessed) {
             val dt = (System.nanoTime() - this.reactionStartTime) / 1e9
             this.reactionStat += dt
@@ -87,34 +113,34 @@ class NBack(val nBack: Int = 2,
             if(isMatch())
                 this.right++
             else
-                this.wrong++
+                this.wrongGuess++
         }
-
-
-        if(finished())
-            return false
 
         hasGuessed = true
         return isMatch()
     }
 
-    fun finished(): Boolean {
-        return isStopped || (hasGuessed && rounds == maxRounds)
 
-    }
 
     fun score(): Result
     {
         return arrayListOf(
-                "n" to (rounds.toDouble()),
+                "rounds" to (rounds.toDouble()),
                 "right" to right.toDouble(),
-                "wrong" to wrong.toDouble(),
-                "no_response" to noResponse.toDouble(),
-                "reaction_time" to this.reactionStat.avg,
-                "reaction_time_stdev" to this.reactionStat.stdev
+                "wrongGuess" to wrongGuess.toDouble(),
+                "wrongNoResponse" to wrongNoResponse.toDouble(),
+                "reactionTime" to this.reactionStat.avg,
+                "reactionTimeStdev" to this.reactionStat.stdev
                 )
     }
 
+    // Either stopped by user or max count.
+    fun isFinished(): Boolean {
+        return isStopped || (rounds == maxRounds)
+
+    }
+
+    // User has ended the game early.
     fun stop() {
         // TODO: Handle non-counting of last character if ending early.
         this.isStopped = true

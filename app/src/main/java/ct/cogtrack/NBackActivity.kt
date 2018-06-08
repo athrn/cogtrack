@@ -10,7 +10,7 @@ import java.util.*
 class NBackActivity : AppCompatActivity() {
 
     private var rnd = Random()
-    private var nback = NBack(maxRounds = 5, randInt = rnd::nextInt)
+    private var nback = NBack(maxRounds = 5, charGenerator = CharSequence("XAXBC")::next)
     private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +21,22 @@ class NBackActivity : AppCompatActivity() {
         quitButton.setOnClickListener { view -> this.endGame() }
 
         // this.nback = NBack({ char: Char -> letterView.text = char.toString() })
-        matchButton.setOnClickListener { this.nback.guessMatch() }
+        matchButton.setOnClickListener { this.guessMatch() }
 
         nextChar()
+    }
+
+    fun updateStats() {
+        charCounter.text = this.nback.rounds.toString()
+        noResponseCounter.text = this.nback.wrongNoResponse.toString()
+        rightCounter.text = this.nback.right.toString()
+        wrongCounter.text = this.nback.wrongGuess.toString()
+    }
+
+
+    fun guessMatch() {
+        this.nback.guessIsMatch()
+        this.updateStats()
     }
 
     fun showChar(char: Char) {
@@ -32,21 +45,24 @@ class NBackActivity : AppCompatActivity() {
 
     fun nextChar() {
 
-        if(this.nback.finished()) {
-            if(! this.nback.isStopped)
-                this.endGame()
-
+        if(this.nback.isFinished()) {
+            this.endGame()
             return
         }
 
-        this.showChar(this.nback.nextChar())
 
-        val visible_time = 500L
-        val hidden_time = 500L
+
+        this.showChar(this.nback.nextChar())
+        this.updateStats()
+
+        val visibleTime = 500L
+        val nextCharDelay = 1000L
+
+        assert(nextCharDelay > visibleTime)
 
         // val handler = Handler()
-        handler.postDelayed({ this.showChar(' ') }, visible_time)
-        handler.postDelayed(this::nextChar, visible_time + hidden_time)
+        handler.postDelayed({ this.showChar(' ') }, visibleTime)
+        handler.postDelayed(this::nextChar, nextCharDelay)
     }
 
 
