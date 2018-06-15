@@ -7,18 +7,20 @@ import android.os.Handler
 import kotlinx.android.synthetic.main.activity_nback.*
 import java.util.*
 
-class NBackActivity : AppCompatActivity() {
+class NBackActivity : AppCompatActivity()
+{
 
     private var rnd = Random()
     private var nback = NBack(maxRounds = 5, charGenerator = CharSequence("XAXBC")::next)
     private val handler = Handler()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nback)
 
         // setSupportActionBar(toolbar)
-        quitButton.setOnClickListener { view -> this.endGame() }
+        quitButton.setOnClickListener { this.endGame() }
 
         // this.nback = NBack({ char: Char -> letterView.text = char.toString() })
         matchButton.setOnClickListener { this.guessMatch() }
@@ -26,33 +28,39 @@ class NBackActivity : AppCompatActivity() {
         nextChar()
     }
 
-    fun updateStats() {
-        charCounter.text = this.nback.rounds.toString()
-        noResponseCounter.text = this.nback.wrongNoResponse.toString()
-        rightCounter.text = this.nback.right.toString()
-        wrongCounter.text = this.nback.wrongGuess.toString()
+    fun updateStats()
+    {
+        // TODO: Count charCount instead of chars. Show 1 right after first char has been shown.
+        // TODO: Red for both wrong counters and Green for both right counters (or use just one red, one green)
+        roundCounter.text = "${this.nback.round}/${this.nback.maxRounds}" // this.nback.round.toString()
+        correctCounter.text = (this.nback.correctMatch + this.nback.correctNoResponse).toString()
+        wrongCounter.text = (this.nback.wrongMatch + this.nback.wrongNoResponse).toString()
     }
 
 
-    fun guessMatch() {
+    fun guessMatch()
+    {
         this.nback.guessIsMatch()
         this.updateStats()
     }
 
-    fun showChar(char: Char) {
+    fun showChar(char: Char)
+    {
         letterView.text = char.toString()
     }
 
-    fun nextChar() {
-
-        if(this.nback.isFinished()) {
+    fun nextChar()
+    {
+        val c = this.nback.nextChar()
+        // TODO: NOTE: This is the correct way to stop the game. nextChar must be called for the last char to be scored. A bit ugly.
+        // Calling nback.stop() is used to end prematurely. Score isn't counted the same way.
+        if (this.nback.isStopped)
+        {
             this.endGame()
             return
         }
 
-
-
-        this.showChar(this.nback.nextChar())
+        this.showChar(c)
         this.updateStats()
 
         val visibleTime = 500L
@@ -66,8 +74,10 @@ class NBackActivity : AppCompatActivity() {
     }
 
 
-    fun endGame() {
+    fun endGame()
+    {
         this.nback.stop()
+        this.updateStats()
         handler.removeCallbacks(this::nextChar)
 
         val intent = Intent(this, ResultActivity::class.java)
@@ -76,10 +86,4 @@ class NBackActivity : AppCompatActivity() {
         this.startActivity(intent)
     }
 
-
-
-
-    fun start() {
-
-    }
 }

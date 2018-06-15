@@ -46,7 +46,7 @@
 
     <TextView
         android:id="@+id/wrongCounter"
-        android:layout_width="wrap_content"
+        android:layout_width="14dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
@@ -55,48 +55,34 @@
         android:text="0"
         android:textSize="24sp"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/charCounter"
+        app:layout_constraintStart_toEndOf="@+id/correctCounter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/charCounter"
+        android:id="@+id/roundCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="0"
+        android:text="0 / 0"
         android:textSize="24sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/noResponseCounter"
-        android:layout_width="wrap_content"
+        android:id="@+id/correctCounter"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/yellow"
-        android:text="0"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/wrongCounter"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/rightCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
         android:background="#00ff00"
         android:text="0"
         android:textSize="24sp"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/noResponseCounter"
+        app:layout_constraintStart_toEndOf="@+id/roundCounter"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

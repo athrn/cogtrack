@@ -7,10 +7,12 @@ import org.junit.runners.MethodSorters
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class StatTest {
+class StatTest
+{
 
     @Test
-    fun t1_singleValue() {
+    fun t1_singleValue()
+    {
         var s = Stat()
         s(1.0)
         assertEquals(1, s.count)
@@ -19,7 +21,8 @@ class StatTest {
     }
 
     @Test
-    fun t2_manyValues() {
+    fun t2_manyValues()
+    {
         var s = Stat()
         s(3.0)
         s(1.0)(2.0)
@@ -31,7 +34,8 @@ class StatTest {
 
 
     @Test
-    fun t3_plusAssign() {
+    fun t3_plusAssign()
+    {
         var s = Stat()
         s += 4.0
         s += 1.0 + 1

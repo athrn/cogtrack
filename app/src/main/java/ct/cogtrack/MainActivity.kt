@@ -7,9 +7,11 @@ import android.support.v7.view.menu.MenuBuilder
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -17,11 +19,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         // toolbar.setMenu( )
         //setSupportActionBar(main)
+        startTwoBackButton.setOnClickListener { startTwoBack() }
     }
 
-    fun startTwoBack(view: View)
+    fun startTwoBack()
     {
-        // startTwoBackButton.text = "foo"
         val intent = Intent(this, NBackActivity::class.java)
         this.startActivity(intent)
 

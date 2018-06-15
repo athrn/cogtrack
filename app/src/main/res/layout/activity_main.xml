@@ -12,7 +12,6 @@
         android:layout_width="167dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:onClick="startTwoBack"
         android:text="2-Back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
