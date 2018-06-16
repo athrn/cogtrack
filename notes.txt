@@ -1,3 +1,5 @@
+# Generalised/normalised/reference score for comparison between tests. Plot average performance of all tests over time. Average over NBack and Trail making test etc.
+
 # Inspiration
 * K-DEFS
   * https://en.wikipedia.org/wiki/Delis%E2%80%93Kaplan_Executive_Function_System
