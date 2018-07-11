@@ -14,6 +14,8 @@ class NBackActivity : AppCompatActivity()
     private var nback = NBack(maxRounds = 5, charGenerator = CharSequence("XAXBC")::next)
     private val handler = Handler()
 
+    // private val backend = SqliteBackend
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)

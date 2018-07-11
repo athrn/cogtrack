@@ -1,3 +1,9 @@
+# DB etc
+# https://stackoverflow.com/questions/45912619/using-room-as-singleton-in-kotlin
+
+# Consider using fragments, ViewFlipper or such for "play game" activity. Results should perhaps not be a separate activity.
+## Activities are recreated on screen rotation? 
+
 # Generalised/normalised/reference score for comparison between tests. Plot average performance of all tests over time. Average over NBack and Trail making test etc.
 
 # Inspiration

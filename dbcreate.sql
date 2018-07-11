@@ -11,28 +11,6 @@ description Text Not Null
 
 -- Create Index GameConfigKeyNameIndex On GameConfigKey(name) Asc
 
--- Description
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('type', 'Type', 'Type of game');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('nback', 'N-Back', 'Match if current character matches N steps back');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('delayTime', 'Delay Time', 'Delay between characters (seconds)');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('visibleTime', 'Visible Time', 'Time to show character (seconds)');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('rounds', 'Number of Rounds', 'Number of rounds per session');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('numMatches', 'Number of Matches', 'Number of matches per session');
-
-Insert Into GameConfigKey (name, prettyName, description)
-Values ('characterSet', 'Character Set', 'Characters to choose from');
-
 -- Internationalization. Move prettyName and description to separate table with language column and inner join with with ProgramConfig.language
 
 Create Table Game
@@ -69,8 +47,6 @@ prettyName Text Not Null,
 description Text Not Null
 );
 
-Insert Into ScoreKey (name, prettyName, description)
-Values ('type', 'Type', 'Type of game');
 
 Create Table Score
 (
@@ -98,6 +74,7 @@ tagId Integer References Tag(id)
 -- Program Stuff
 --------------------
 
+-- NOTE: Should be populated from code. 
 -- Keep track of when updates happen if there are changes in scoring etc.
 Create Table ProgramUpdates
 (
@@ -105,4 +82,4 @@ timestamp Real Default (julianday('now')),
 version Text Not Null
 );
 
-Insert Into ProgramUpdates (version) Values ('0.1');
+
