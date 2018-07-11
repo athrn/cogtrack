@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity()
     fun startTwoBack()
     {
         val intent = Intent(this, NBackActivity::class.java)
+        // TODO: Pass gameId to the intent
+        intent.putExtra("gameId", 0)
         this.startActivity(intent)
 
     }
